@@ -1,0 +1,337 @@
+openapi: 3.0.0
+info:
+  title: Dog Api
+  description: An Api that provides information about dogs.
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000/
+    description: Local Host Server
+  - url: http://staging-api.example.com
+    description: Live Deployed Server
+
+paths:
+  /api/pet:
+    get:
+      tags:
+        - Dog Info
+      summary: Get details of all dogs from Db.
+      responses: 
+        '200':
+          description: Array of all the dog information
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 200
+                  status:
+                    type: string
+                    example: ok
+                  message:
+                    type: string
+                    example: Data fetched Successfully
+                  data:  
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                          _id:
+                            type: string
+                            example: "62f3435a25815b8500072a0a"
+                          name:
+                            type: string
+                            example: "Coco"
+                          type:
+                            type: string
+                            example: "pure"
+                          breed:
+                            type: string
+                            example: "Husky"
+                          age:
+                            type: string
+                            example: "2"   
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 500
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: Problem in fetching details from db
+                  error:
+                    type: string
+                    example: Error in parsing
+                               
+    post: 
+      tags:    
+        - Add Info
+      summary: Add a file to generate data of dogs in Database
+      requestBody:
+        description: CSV data file to upload into DB.
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                dogs:
+                  type: string
+                  format: binary    
+      responses: 
+        '200':
+          description: Response after successful insertion of file
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 200
+                  status:
+                    type: string
+                    example: ok
+                  message:
+                    type: string
+                    example: Data inserted Successfully
+                  data:
+                    type: array
+                    example: []
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 500
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: Problem in inserting data into db
+                  error:
+                    type: string
+                    example: Lost db connection
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 400
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: Problem in parsing data from given file
+                  error:
+                    type: string
+                    example: column mismatch
+  /api/pet/{petId}:
+    get:
+      tags:
+        - Dog Info
+      summary: Get details of a particular dog by its id.
+      parameters:
+        - in: path
+          name: petId
+          schema:
+            type: string
+          required: true
+          description: specific Id of the dog details stored in db
+      responses:
+        '200':
+          description: Information of a particular dog
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 200
+                  status:
+                    type: string
+                    example: ok
+                  message:
+                    type: string
+                    example: Data fetched Successfully
+                  data:               
+                    type: object
+                    properties:
+                      _id:
+                        type: string
+                        example: "62f3435a25815b8500072a0a"
+                      name:
+                        type: string
+                        example: "Coco"
+                      type:
+                        type: string
+                        example: "pure"
+                      breed:
+                        type: string
+                        example: "Husky"
+                      age:
+                        type: string
+                        example: "2"
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 500
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: Problem in fetching details from db
+                  error:
+                    type: string
+                    example: Error in db connection  
+    patch:
+      summary: Update a particular data with respect to its petId.
+      tags:
+        - Update Dog Info
+      summary: Update a particular dog's information.
+      parameters:
+        - in: path
+          name: petId
+          schema:
+            type: string
+          required: true
+          description: specific Id of the dog details stored in db
+      requestBody:
+        description: Json data required to update a paricular data.
+        required: true
+        content: 
+          application/json:
+            schema:
+              type: object
+
+              properties: 
+                name: 
+                  type: string
+                  example: Hugo
+                type:
+                  type: string
+                  example: mixed
+                breed:
+                  type: string
+                  example: Husky
+                age:
+                  type: string
+                  example: "5"                
+      responses:
+        '200':
+          description: Response from server after updation of a record.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 200
+                  status:
+                    type: string
+                    example: ok
+                  message:
+                    type: string
+                    example: Data updated Successfully
+                  data:
+                    type: array
+                    example: []
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 500
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: Problem in updating details into db
+                  error:
+                    type: string
+                    example: error in db connection  
+    delete:
+      tags:
+        - Delete Dog Info
+      parameters:
+        - in: path
+          name: petId
+          schema:
+            type: string
+          required: true
+          description: specific Id of the dog details stored in db
+      summary: Delete a particular data of dog information
+      responses:
+        '200':
+          description: Response from server after deletion of a record.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 200
+                  status:
+                    type: string
+                    example: ok
+                  message:
+                    type: string
+                    example: Data deleted Successfully
+                  data:
+                    type: array
+                    example: []
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 500
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: Problem in deleting details from db
+                  error:
+                    type: string
+                    example: Error in db connection
+
+
