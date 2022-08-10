@@ -4,10 +4,10 @@ info:
   description: An Api that provides information about dogs.
   version: 1.0.0
 servers:
+  - url: https://doggydb.herokuapp.com/
+    description: Live Deployed Server
   - url: http://localhost:3000/
     description: Local Host Server
-  - url: http://staging-api.example.com
-    description: Live Deployed Server
 
 paths:
   /api/pet:
