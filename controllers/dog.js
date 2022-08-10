@@ -5,6 +5,9 @@ const { Dogs } = db;
 exports.addPets = async (req, res) => {
     let jsonData;
     try {
+        if (!req.files || Object.keys(req.files).length === 0) {
+           throw new Error('No File was uploaded');
+        }        
         jsonData = await jsonConvert(req.files.dogs);
     }
     catch (err) {
