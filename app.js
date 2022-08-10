@@ -8,6 +8,9 @@ const swaggerUi = require('swagger-ui-express');
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
+//Cors Configure Express For all routes
+app.use(require('cors')());
+// Setup Swagger documentation
 app.use("/api-docs",swaggerUi.serve, swaggerUi.setup(require('yamljs').load("./swagger.yaml")));
 //Run Db 
 db.connectDb();
