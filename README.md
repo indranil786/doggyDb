@@ -2,7 +2,7 @@
 
 An Api to upload,retrieve,update,delete information about dogs.
 
-> Deployed at  https://apna-cartv1.herokuapp.com/
+> Deployed at  https://doggydb.herokuapp.com/
 
 ## Tech Stack :-
 -  Express
